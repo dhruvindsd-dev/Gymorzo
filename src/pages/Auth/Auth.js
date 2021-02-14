@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
-import AuthContext from "../../AuthContext";
 import Logo from "../../components/Logo/Logo";
 import InputList from "./InputList/InputList";
 
 const UserAuth = (props) => {
   const [IsSignUp, setIsSignUp] = useState(false);
-  const authContext = useContext(AuthContext);
   useEffect(() => {
     if (props.match.params.type === "signin") {
       setIsSignUp(false);
@@ -39,7 +37,7 @@ const UserAuth = (props) => {
           </div>
           <div className="box has-background-light">
             <div className="buttons is-centered">
-              <button className="button is-light is-link is-outlined     ">
+              <button className="button is-light is-link is-outlined">
                 <span className="icon">
                   <i className="fab fa-google"></i>
                 </span>
@@ -53,10 +51,7 @@ const UserAuth = (props) => {
               </button>
             </div>
             <p className="my-n3 has-text-weight-bold"> - OR - </p>
-            <InputList
-              // @ts-ignore
-              isSignUp={IsSignUp}
-            />
+            <InputList isSignUp={IsSignUp} />
           </div>
         </div>
       </div>

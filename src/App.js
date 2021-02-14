@@ -29,6 +29,8 @@ const username = localStorage.getItem("username");
 const email = localStorage.getItem("email");
 const instructor = localStorage.getItem("instructor") == "true" ? true : false;
 
+export const CACHE = new Map();
+
 let initialState = {
   isAuthenticated: false,
   token: "",
@@ -100,12 +102,6 @@ function App() {
           exact
           component={Profile}
         />
-
-        {/*
-         * home page : workouts page - show pending workouts
-         * see what othes are doing - show the workouts of friends and other people
-         * my profile ...
-         */}
         {/* instructor routes  */}
         <Route
           path="/auth/instructor/login"
@@ -132,7 +128,6 @@ function App() {
           exact
           component={InstructorWorkouts}
         />
-        {/* <Route path="/workout/:id/play" exact component={DoWorkOutSummary} /> */}
         <Route path="/workout/:id" exact component={DoWorkOutSummary} />
         <Route path="/not-found" component={NotFound} />
         <Route component={NotFound} />
@@ -142,4 +137,3 @@ function App() {
 }
 
 export default App;
-// keeping the feed page just like insta

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import AuthContext from "../../AuthContext";
 import Logo from "../Logo/Logo";
 
@@ -110,4 +110,4 @@ const Navbar = () => {
   );
 };
 
-export default React.memo(withRouter(Navbar));
+export default Navbar;

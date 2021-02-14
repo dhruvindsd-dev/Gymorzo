@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AxiosInstance } from "../../App";
+import { AxiosInstance, CACHE } from "../../App";
 import Loader from "../../components/Loader/Loader";
 import WorkOutCard from "../../components/WorkOutCard/WorkOutCard";
 
-const WorkOuts = (props) => {
+const WorkOuts = ({ match }) => {
   // * see if instructor is assigned : if no then tell the user so,
   // * if there : show two panel kind of things past workouts and pending workouts ...
-  const [ShowPendingWorkOuts, setShowPendingWorkOuts] = useState(true);
   const [WorkOutsList, setWorkOutsList] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
+  const isPendingWorkouts = match.params.type === "pending" ? true : false;
+  console.log("rendering ");
   useEffect(() => {
-    let urlEnding;
-    if (props.match.params.type == "pending") {
-      setShowPendingWorkOuts(true);
-      urlEnding = "pending";
-    } else if (props.match.params.type == "past") {
-      setShowPendingWorkOuts(false);
-      urlEnding = "past";
-    } else {
+    let params = match.params.type;
+    if (params !== "pending" || params !== "past ") {
       // redirect to 404
     }
-    AxiosInstance.get(`/get-user-workouts/${urlEnding}`).then((res) => {
-      setWorkOutsList(res.data);
-      setIsLoading(false);
-    });
-  }, [props.match.params.type]);
+    if (CACHE.has(`/workouts/${params}`))
+      setWorkOutsList(CACHE.get(`/workouts/${params}`));
+    else {
+      setIsLoading(true);
+      AxiosInstance.get(`/get-user-workouts/${params}`).then((res) => {
+        CACHE.set(`/workouts/${params}`, res.data);
+        setWorkOutsList(res.data);
+        setIsLoading(false);
+      });
+    }
+  }, [match.params.type]);
   let workoutCards;
   if (IsLoading) workoutCards = <Loader />;
   else if (WorkOutsList.length > 0)
     workoutCards = (
       <div className="columns is-multiline is-mobile">
         {WorkOutsList.map((item, i) => (
-          <div className="column is-3-desktop is-6-touch " key={i}>
+          <div className="column is-3-desktop is-half-touch" key={i}>
             <WorkOutCard
               title={item.workout.details.name}
               muscles={item.workout.details.muscles.join(", ")}
@@ -58,7 +59,7 @@ const WorkOuts = (props) => {
             to="/workouts/pending"
             className={
               "button is-primary is-medium " +
-              (ShowPendingWorkOuts ? "" : "is-light is-outlined ")
+              (isPendingWorkouts ? "" : "is-light is-outlined ")
             }
           >
             Pending Workouts
@@ -69,14 +70,14 @@ const WorkOuts = (props) => {
             to="/workouts/past"
             className={
               "button is-primary is-medium " +
-              (ShowPendingWorkOuts ? "is-light is-outlined" : "")
+              (isPendingWorkouts ? "is-light is-outlined" : "")
             }
           >
             Past Workouts
           </Link>
         </div>
       </div>
-      <div className="">{workoutCards}</div>
+      <div>{workoutCards}</div>
     </div>
   );
 };
