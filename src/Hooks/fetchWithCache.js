@@ -15,12 +15,13 @@ const useFetchWithCache = (url, cachePath) => {
     });
   };
   useEffect(() => {
-    if (CACHE.has(cachePath))
+    if (CACHE.has(cachePath)) {
+      console.log("using cache");
       setState({
         isLoading: false,
         data: CACHE.get(cachePath),
       });
-    else
+    } else
       AxiosInstance.get(url).then((res) => {
         CACHE.set(cachePath, res.data);
         setState({

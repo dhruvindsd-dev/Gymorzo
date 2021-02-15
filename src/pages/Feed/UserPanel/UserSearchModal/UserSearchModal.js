@@ -31,6 +31,7 @@ const UserSearchModal = ({ query, searchUser, close }) => {
         status={item.status}
         actionType={item.btn_action}
         id={item.id}
+        // @ts-ignore
         key={i}
       />
     ));
@@ -40,7 +41,7 @@ const UserSearchModal = ({ query, searchUser, close }) => {
       <div className="modal-card">
         <header className="modal-card-head">
           <p className="modal-card-title">
-            Showing results for{" "}
+            Showing results for
             <span className="has-text-weight-semibold">{query}</span>
           </p>
           <button className="delete" onClick={close}></button>

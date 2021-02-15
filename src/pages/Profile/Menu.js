@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
-import { AxiosInstance } from "../../App";
+import { AxiosInstance, CACHE } from "../../App";
 import Loader from "../../components/Loader/Loader";
 import WorkOutCard from "../../components/WorkOutCard/WorkOutCard";
 import PostCard from "../Feed/PostCard/PostCard";
 
 const Menu = (props) => {
   const { posts } = props;
-  console.log(props);
   const { type: menuType } = props.match.params;
   const [Data, setData] = useState([]);
   const [IsLoading, setIsLoading] = useState(false);
@@ -16,9 +15,9 @@ const Menu = (props) => {
     let urlEnding;
     if (menuType === "pending") urlEnding = "pending";
     else if (menuType === "past") urlEnding = "past";
-    else return;
+    else return; // user posts url
+    // setIsLoading(true);
     AxiosInstance.get(`get-user-workouts/${urlEnding}`).then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
   }, [menuType]);
@@ -26,24 +25,33 @@ const Menu = (props) => {
   if (IsLoading) grid = <Loader />;
   else if (menuType === "pending" || menuType === "past")
     if (!!Data.length)
-      grid = Data.map((item, i) => (
-        <div className="column is-3-desktop is-6-touch " key={i}>
-          <WorkOutCard
-            title={item.workout.details.name}
-            muscles={item.workout.details.muscles.join(", ")}
-            time={item.workout.details.totalTime}
-            id={item.workout.details.id}
-          />
+      grid = (
+        <div className="columns is-multiline is-mobile">
+          {Data.map((item, i) => (
+            <div className="column is-3-desktop is-6-touch " key={i}>
+              <WorkOutCard
+                title={item.workout.details.name}
+                muscles={item.workout.details.muscles.join(", ")}
+                time={item.workout.details.totalTime}
+                id={item.workout.details.id}
+              />
+            </div>
+          ))}
         </div>
-      ));
-    else grid = <p className="is-title is-4">No Data Found</p>;
+      );
+    else
+      grid = <p className="is-title is-4 has-text-centered">No Data Found</p>;
   else if (!!posts.length)
-    grid = posts.map((item, i) => (
-      <div className="column is-4" key={i}>
-        <PostCard />
+    grid = (
+      <div className="columns is-multiline is-mobile">
+        {posts.map((item, i) => (
+          <div className="column is-4" key={i}>
+            <PostCard />
+          </div>
+        ))}
       </div>
-    ));
-  else grid = grid = <p className="is-title is-4">No Post Found</p>;
+    );
+  else grid = <p className="is-title is-4 has-text-centeredZ">No Post Found</p>;
   return (
     <>
       <div className="tabs is-centered">
@@ -77,11 +85,9 @@ const Menu = (props) => {
           </li>
         </ul>
       </div>
-
+      {grid}
       <div className="columns is-centered">
-        <div className="column is-8">
-          <div className="columns is-multiline is-mobile">{grid}</div>
-        </div>
+        <div className="column is-8"></div>
       </div>
     </>
   );

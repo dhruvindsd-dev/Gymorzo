@@ -16,9 +16,10 @@ const WorkOuts = ({ match }) => {
     if (params !== "pending" || params !== "past ") {
       // redirect to 404
     }
-    if (CACHE.has(`/workouts/${params}`))
+    if (CACHE.has(`/workouts/${params}`)) {
       setWorkOutsList(CACHE.get(`/workouts/${params}`));
-    else {
+      setIsLoading(false);
+    } else {
       setIsLoading(true);
       AxiosInstance.get(`/get-user-workouts/${params}`).then((res) => {
         CACHE.set(`/workouts/${params}`, res.data);

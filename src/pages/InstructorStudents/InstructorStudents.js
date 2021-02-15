@@ -16,7 +16,6 @@ const InstructorStudents = (props) => {
   const [IsLoading, setIsLoading] = useState(false);
   const [IsAddStudentModalOpen, setIsAddStudentModalOpen] = useState(false);
   const [SearchQuery, setSearchQuery] = useState("");
-
   const [
     AssignStudentWorkoutModalData,
     setAssignStudentWorkoutModalData,

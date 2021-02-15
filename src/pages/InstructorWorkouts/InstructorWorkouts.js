@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AxiosInstance } from "../../App";
 import Loader from "../../components/Loader/Loader";
 import WorkOutCard from "../../components/WorkOutCard/WorkOutCard";
+import useFetchWithCache from "../../Hooks/fetchWithCache";
 
-const InstructorWorkouts = () => {
-  const [WorkOutsList, setWorkOutsList] = useState([]);
-  const [IsLoading, setIsLoading] = useState(false);
+const InstructorWorkouts = ({ location }) => {
+  const [data, isLoading] = useFetchWithCache(
+    "/get-instructor-workouts",
+    location.pathname
+  );
   const [SearchQuery, setSearchQuery] = useState("");
-  useEffect(() => {
-    setIsLoading(true);
-    AxiosInstance.get("/get-instructor-workouts").then((res) => {
-      setWorkOutsList(res.data);
-      setIsLoading(false);
-    });
-  }, []);
   const handleInputChange = (evnt) => {
     setSearchQuery(evnt.target.value);
   };
   let workoutCards;
-  if (IsLoading) workoutCards = <Loader />;
-  else if (WorkOutsList.length > 0)
+  if (isLoading) workoutCards = <Loader />;
+  else if (data.length > 0)
     workoutCards = (
       <div className="columns is-multiline is-mobile">
-        {WorkOutsList.filter(
-          (item) =>
-            item.details.name.toLowerCase().includes(SearchQuery) ||
-            item.details.muscles.join(", ").toLowerCase().includes(SearchQuery)
-        ).map((item, i) => (
-          <div className="column is-3-desktop is-6-touch " key={i}>
-            <WorkOutCard
-              title={item.details.name}
-              muscles={item.details.muscles.join(", ")}
-              time={item.details.totalTime}
-              id={item.details.id}
-            />
-          </div>
-        ))}
+        {data
+          .filter(
+            (item) =>
+              item.details.name.toLowerCase().includes(SearchQuery) ||
+              item.details.muscles
+                .join(", ")
+                .toLowerCase()
+                .includes(SearchQuery)
+          )
+          .map((item, i) => (
+            <div className="column is-3-desktop is-6-touch " key={i}>
+              <WorkOutCard
+                title={item.details.name}
+                muscles={item.details.muscles.join(", ")}
+                time={item.details.totalTime}
+                id={item.details.id}
+              />
+            </div>
+          ))}
       </div>
     );
   else
@@ -54,7 +54,7 @@ const InstructorWorkouts = () => {
           className="button is-link is-light is-outline"
         >
           <span className="icon">
-            <i className="fas fa-plus"></i>''
+            <i className="fas fa-plus"></i>
           </span>
           <span>New Workout</span>
         </Link>

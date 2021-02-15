@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const UserSearchInput = ({ openUserSearchModal }) => {
+  // could use ref in this case but using ref because want the btn to be disabled intially when there is no user input, as the user starts typing the btn should get enabled
   const [Query, setQuery] = useState("");
   const handleSubmit = () => {
     openUserSearchModal(Query);

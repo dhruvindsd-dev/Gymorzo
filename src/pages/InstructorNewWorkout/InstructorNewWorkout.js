@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { AxiosInstance } from "../../App";
-import Exer from "../../assets/img/ex1.gif";
 import StateUiOne from "./StateUiOne/StateUiOne";
-import StateUiThree from "./StateUiThree/StateUiThree";
 import StateUiTwo from "./StateUiTwo/StateUiTwo";
-//  name , exercices , rest time and exercise time
-// 3 different states : name , exercies and times
+import StateUiThree from "./StateUiThree/StateUiThree";
+//  nme , exercices , rest time and exercise time
+// 3 different states : name , exercies and time
 // 2 way binding is very nessesary because : lets say the user goes back from state 3 to state 1 in that case we the same data to show and not some blank thing
 const InstructorNewWorkout = ({ history, match }) => {
   const [StateNo, setStateNo] = useState(1);
@@ -13,16 +12,16 @@ const InstructorNewWorkout = ({ history, match }) => {
     name: "",
     activeTime: 0,
     restTime: 0,
-    touched: false,
+    touched: false, //
   });
   // the exercises which have a
   const [AllExercises, setAllExercises] = useState([]);
   useEffect(() => {
-    let state;
-    if (match.params.type == "name") setStateNo(1);
-    if (match.params.type == "exercises") setStateNo(2);
-    if (match.params.type == "time") setStateNo(3);
-    setData({ ...Data, touched: false });
+    // showing state according to the url
+    if (match.params.type === "name") setStateNo(1);
+    if (match.params.type === "exercises") setStateNo(2);
+    if (match.params.type === "time") setStateNo(3);
+    // setData({ ...Data, touched: false });
     //   get exercise data from backend
     if (!!!AllExercises.length)
       AxiosInstance.get("get-all-exercises-name").then((res) => {

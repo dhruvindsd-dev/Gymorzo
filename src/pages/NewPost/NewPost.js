@@ -34,12 +34,6 @@ const NewPost = (props) => {
               </figure>
             </div>
             <div className="card-content has-background-light">
-              {/* <p className="title is-4">Usename</p> */}
-              {/* <p className="subtitle is-6" contentEditable>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-                maiores numquam architecto repellendus iure, omnis totam
-                veritatis magni ut sit.
-              </p> */}
               <p className="help is-dark mb-2">Caption Of 100 chracters </p>
               <textarea
                 ref={textAreaRef}
