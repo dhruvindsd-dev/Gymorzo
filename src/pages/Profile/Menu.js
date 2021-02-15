@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router";
 import { NavLink } from "react-router-dom";
 import { AxiosInstance, CACHE } from "../../App";
 import Loader from "../../components/Loader/Loader";
 import WorkOutCard from "../../components/WorkOutCard/WorkOutCard";
 import PostCard from "../Feed/PostCard/PostCard";
 
-const Menu = (props) => {
-  const { posts } = props;
-  const { type: menuType } = props.match.params;
+const Menu = ({ posts, pathname, params }) => {
   const [Data, setData] = useState([]);
   const [IsLoading, setIsLoading] = useState(false);
+  const menuType = params.type;
+  const username = params.username;
   useEffect(() => {
     let urlEnding;
     if (menuType === "pending") urlEnding = "pending";
     else if (menuType === "past") urlEnding = "past";
     else return; // user posts url
     // setIsLoading(true);
-    AxiosInstance.get(`get-user-workouts/${urlEnding}`).then((res) => {
-      setData(res.data);
-    });
+    if (CACHE.has(pathname)) setData(CACHE.get(pathname));
+    else {
+      setIsLoading(true);
+      AxiosInstance.get(`get-user-workouts/${urlEnding}`).then((res) => {
+        setData(res.data);
+        setIsLoading(false);
+        CACHE.set(pathname, res.data);
+      });
+    }
   }, [menuType]);
   let grid;
   if (IsLoading) grid = <Loader />;
@@ -58,7 +63,7 @@ const Menu = (props) => {
         <ul>
           <li>
             <NavLink
-              to={`/profile/${props.match.params.username}`}
+              to={`/profile/${username}`}
               exact
               activeClassName="is-active"
             >
@@ -67,7 +72,7 @@ const Menu = (props) => {
           </li>
           <li>
             <NavLink
-              to={`/profile/${props.match.params.username}/workouts/pending`}
+              to={`/profile/${username}/workouts/pending`}
               exact
               activeClassName="is-active"
             >
@@ -76,7 +81,7 @@ const Menu = (props) => {
           </li>
           <li>
             <NavLink
-              to={`/profile/${props.match.params.username}/workouts/past`}
+              to={`/profile/${username}/workouts/past`}
               exact
               activeClassName="is-active"
             >
@@ -93,4 +98,4 @@ const Menu = (props) => {
   );
 };
 
-export default withRouter(Menu);
+export default Menu;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AxiosInstance, CACHE } from "../App";
 // caching with react-router match params and not the api-url since the api-url can be long and hard to delete at differnt places.
-const useFetchWithCache = (url, cachePath) => {
+const useFetchWithCache = (url, cachePath, params) => {
   const [State, setState] = useState({
     isLoading: true,
     data: null,
@@ -22,7 +22,9 @@ const useFetchWithCache = (url, cachePath) => {
         data: CACHE.get(cachePath),
       });
     } else
-      AxiosInstance.get(url).then((res) => {
+      AxiosInstance.get(url, {
+        params: params,
+      }).then((res) => {
         CACHE.set(cachePath, res.data);
         setState({
           isLoading: false,

@@ -1,32 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Redirect } from "react-router";
-import { AxiosInstance } from "../../App";
 import Loader from "../../components/Loader/Loader";
+import useFetchWithCache from "../../Hooks/fetchWithCache";
 import Menu from "./Menu";
 
-const Profile = (props) => {
-  const [ProfileDetails, setProfileDetails] = useState({});
-  const [IsLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const username = props.match.params.username;
-    AxiosInstance.get("get-user-profile-initial-load", {
-      params: {
-        username: username,
-      },
-    }).then((res) => {
-      setProfileDetails(res.data);
-      setIsLoading(false);
-    });
-  }, []);
+const Profile = ({ match, location }) => {
+  const [data, isLoading] = useFetchWithCache(
+    "get-user-profile-initial-load",
+    location.pathname,
+    {
+      username: match.params.username,
+    }
+  );
   let restult;
-  if (IsLoading) restult = <Loader />;
-  else if (ProfileDetails === "no user found")
-    restult = <Redirect to="/not-found" />;
+  if (isLoading) restult = <Loader />;
+  else if (data === "no user found") restult = <Redirect to="/not-found" />;
   else
     restult = (
       <div className="section">
-        <MainProfile profileDetails={ProfileDetails} />
-        <Menu posts={ProfileDetails.posts} />
+        <MainProfile profileDetails={data} />
+        <Menu
+          posts={data.posts}
+          pathname={location.pathname}
+          params={match.params}
+        />
       </div>
     );
   return <> {restult}</>;
