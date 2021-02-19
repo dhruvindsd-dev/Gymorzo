@@ -68,7 +68,7 @@ const StateUiTwo = ({
 
 const ExerciseCard = ({ name, muscles, remove }) => (
   <div className="column is-3-desktop is-6-touch">
-    <div className="box red-gradient">
+    <div className="box primary-gradient">
       <div className="columns">
         <div className="column is-8">
           <p className="is-size-4 has-text-weight-semibold">{name}</p>

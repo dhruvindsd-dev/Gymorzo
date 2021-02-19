@@ -41,7 +41,7 @@ const Menu = ({ posts, pathname, params }) => {
       grid = (
         <div className="columns is-multiline is-mobile">
           {Data.map((item, i) => (
-            <div className="column is-3-desktop is-6-touch " key={i}>
+            <div className="column is-4-desktop is-6-touch " key={i}>
               <WorkOutCard
                 title={item.workout.details.name}
                 muscles={item.workout.details.muscles.join(", ")}

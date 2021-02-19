@@ -7,12 +7,21 @@
   );
 }
 
-.red-gradient {
-  background-image: linear-gradient(
-    to right,
-    rgba(255, 161, 161, 0.226),
-    rgba(255, 0, 0, 0.158)
-  );
+.primary-gradient {
+  background-image: linear-gradient(to right, #cce7e333, #00ffd938);
+  border: 2px solid #00d1b2;
+  box-shadow: 2px 2px #00d1b2;
+  transition: all ease 0.3s;
+}
+.primary-gradient:hover {
+  box-shadow: 4px 4px #00d1b2;
+  transform: translateY(-2px) translateX(-2px);
+}
+
+.workout-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 img {
