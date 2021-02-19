@@ -11,11 +11,11 @@
   background-image: linear-gradient(to right, #cce7e333, #00ffd938);
   border: 2px solid #00d1b2;
   box-shadow: 2px 2px #00d1b2;
-  transition: all ease 0.3s;
+  transition: all 0.2s ease;
 }
 .primary-gradient:hover {
-  box-shadow: 4px 4px #00d1b2;
-  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 5px 5px #00d1b2;
+  transform: translateY(-3px) translateX(-3px);
 }
 
 .workout-tag {

@@ -12,15 +12,9 @@ const WorkOutCard = ({ title, muscles, time, id }) => {
       onClick={handleClick}
     >
       <p className="is-size-4 has-text-weight-bold">{title}</p>
-      <div className="columns">
-        <div className="column is-8">
-          <p>{muscles}</p>
-        </div>
-        <div className="column">
-          <div className="button  has-text-weight-semibold is-small is-light is-static is-primary  workout-tag">
-            {time} min
-          </div>
-        </div>
+      <p>{muscles}</p>
+      <div className="button  has-text-weight-semibold is-small is-light is-static is-primary  workout-tag">
+        {time} min
       </div>
     </div>
   );
