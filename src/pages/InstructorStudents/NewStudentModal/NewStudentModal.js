@@ -1,31 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { AxiosInstance } from "../../../App";
 import Loader from "../../../components/Loader/Loader";
+import useFetchWithCache from "../../../Hooks/fetchWithCache";
 import StudentCard from "./StudentCard/StudentCard";
 
 const NewStudentModal = ({ closeModal }) => {
-  const [Students, setStudents] = useState([]);
-  const [IsLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    AxiosInstance.get("get-students-without-instructors").then((res) => {
-      setStudents(res.data);
-      setIsLoading(false);
-    });
-  }, []);
+  const [data, isLoading] = useFetchWithCache(
+    "/get-students-without-instructors",
+    "get-students-without-instructors"
+  );
+  const [SearchQuery, setSearchQuery] = useState("");
+  // const [Students, setStudents] = useState([]);
+  // const [IsLoading, setIsLoading] = useState(true);
   let students;
-  if (IsLoading) students = <Loader />;
-  else if (!!Students.length)
-    students = Students.map((item, i) => (
-      <StudentCard
-        name={item.username}
-        status={item.status}
-        // click={() => {
-        // }}
-        closeModal={closeModal}
-        id={item.id}
-      />
-    ));
+  if (isLoading) students = <Loader />;
+  else if (!!data.length)
+    students = data
+      .filter(
+        (item) =>
+          item.username.toLowerCase().includes(SearchQuery) ||
+          item.status.toLowerCase().includes(SearchQuery)
+      )
+      .map((item) => (
+        <StudentCard
+          key={item.username}
+          name={item.username}
+          status={item.status}
+          closeModal={closeModal}
+          id={item.id}
+        />
+      ));
   else students = <p className="is-size-4">No Students Found</p>;
+  const handleInput = (event) => {
+    setSearchQuery(event.target.value);
+  };
   return (
     <div className="modal is-active">
       <div className="modal-background" onClick={closeModal}></div>
@@ -44,6 +52,7 @@ const NewStudentModal = ({ closeModal }) => {
             <div className="field">
               <div className="control has-icons-left">
                 <input
+                  onChange={handleInput}
                   type="text"
                   className="input"
                   placeholder="search students"

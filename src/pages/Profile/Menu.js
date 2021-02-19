@@ -16,11 +16,19 @@ const Menu = ({ posts, pathname, params }) => {
     else if (menuType === "past") urlEnding = "past";
     else return; // user posts url
     // setIsLoading(true);
+    console.log(CACHE.get(pathname));
+    console.log(pathname);
     if (CACHE.has(pathname)) setData(CACHE.get(pathname));
     else {
       setIsLoading(true);
-      AxiosInstance.get(`get-user-workouts/${urlEnding}`).then((res) => {
+      AxiosInstance.get(`get-user-workouts-by-username/${urlEnding}`, {
+        params: {
+          username: username,
+        },
+      }).then((res) => {
         setData(res.data);
+        console.log("from menu");
+        console.log(res.data);
         setIsLoading(false);
         CACHE.set(pathname, res.data);
       });
@@ -90,9 +98,8 @@ const Menu = ({ posts, pathname, params }) => {
           </li>
         </ul>
       </div>
-      {grid}
       <div className="columns is-centered">
-        <div className="column is-8"></div>
+        <div className="column is-8">{grid}</div>
       </div>
     </>
   );

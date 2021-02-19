@@ -17,8 +17,10 @@ const WorkOutCard = ({
     setIsLoading(true);
     // userId and the instructror workoutID
     AxiosInstance.put("/assign-student-workout", formData).then((res) => {
+      console.log(res.data);
       closeModal();
     });
+    console.log("click");
   };
   return (
     <div className="my-3 px-2">

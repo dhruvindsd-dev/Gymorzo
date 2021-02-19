@@ -7,7 +7,7 @@ import Menu from "./Menu";
 const Profile = ({ match, location }) => {
   const [data, isLoading] = useFetchWithCache(
     "get-user-profile-initial-load",
-    location.pathname,
+    "get-user-profile-initial-load",
     {
       username: match.params.username,
     }

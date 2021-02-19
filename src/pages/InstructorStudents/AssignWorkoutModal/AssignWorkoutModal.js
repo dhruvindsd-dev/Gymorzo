@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { AxiosInstance } from "../../../App";
 import Loader from "../../../components/Loader/Loader";
+import useFetchWithCache from "../../../Hooks/fetchWithCache";
 import WorkOutCard from "./WorkoutCard/WorkoutCard";
 
 const AssignWorkoutModal = ({ name, closeModal }) => {
-  const [WorkOuts, setWorkOuts] = useState([]);
-  const [IsLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    // fetch all the instructor workouts
-    setIsLoading(true);
-    AxiosInstance.get("/get-instructor-workouts").then((res) => {
-      setWorkOuts(res.data);
-      setIsLoading(false);
-      console.log(res.data);
-    });
-  }, []);
+  console.log(name);
+  // caching wtth the same name as api route so can use cached data from /instructor/workouts. will save one api request
+  const [data, isLoading] = useFetchWithCache(
+    "/get-instructor-workouts",
+    "/get-instructor-workouts"
+  );
+
   let workouts;
-  if (IsLoading) workouts = <Loader />;
+  if (isLoading) workouts = <Loader />;
   else
-    workouts = WorkOuts.map((item, i) => (
+    workouts = data.map((item, i) => (
       <WorkOutCard
         key={i}
         name={item.details.name}
