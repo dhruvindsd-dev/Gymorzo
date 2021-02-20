@@ -11,7 +11,7 @@ class DoWorkOut extends Component {
   timer = null;
   // handling the timer in this, in development react called setstaet twice which causees triggering of multiple timers so using this
   componentDidMount() {
-    this.timer = setInterval(this.handleInterval, 200);
+    this.timer = setInterval(this.handleInterval, 50);
     this.setState({
       isRestTime: false,
       activeTime: parseInt(this.props.activeTime),
@@ -52,7 +52,7 @@ class DoWorkOut extends Component {
     clearInterval(this.timer);
   };
   startInterval = () => {
-    this.timer = setInterval(this.handleInterval, 200);
+    this.timer = setInterval(this.handleInterval, 100);
     this.setState({ isPause: false });
   };
   render() {
