@@ -5,7 +5,7 @@ import AfterWorkout from "./AfterWorkout";
 import DoWorkOut from "./DoWorkOut";
 import ExerciseCard from "./ExerciseCard/ExerciseCard";
 
-const DoWorkOutSummary = (props) => {
+const DoWorkOutSummary = ({ match }) => {
   const [IsLoading, setIsLoading] = useState(true);
   const [WorkoutProgress, setWorkoutProgress] = useState({
     didStart: false,
@@ -13,15 +13,22 @@ const DoWorkOutSummary = (props) => {
     currentExerciseNo: 0,
     maxExerciseNumber: 0,
   });
-  const [WorkoutSummaryData, setWorkoutSummaryData] = useState({});
+  const [WorkoutSummaryData, setWorkoutSummaryData] = useState({
+    exercise: [],
+    exercise_time: 0,
+    id: 0,
+    instructor: 0,
+    name: "",
+    rest_time: 0,
+    total_time: 0,
+  });
   useEffect(() => {
     setIsLoading(true);
     AxiosInstance.get("/get-workout-from-id", {
       params: {
-        workoutId: props.match.params.id,
+        workoutId: match.params.id,
       },
     }).then((res) => {
-      console.log(res.data);
       setWorkoutSummaryData(res.data);
       setWorkoutProgress({
         ...WorkoutProgress,
@@ -50,7 +57,7 @@ const DoWorkOutSummary = (props) => {
     }
   };
   const prevExercise = () => {
-    if (WorkoutProgress.currentExerciseNo - 1 > 0)
+    if (WorkoutProgress.currentExerciseNo - 1 >= 0)
       setWorkoutProgress({
         ...WorkoutProgress,
         currentExerciseNo: WorkoutProgress.currentExerciseNo - 1,
@@ -89,7 +96,6 @@ const DoWorkOutSummary = (props) => {
         </div>
       </>
     );
-  // gotta create a arr of all the exer and make a current exercise index :then loop through that list one by one and complete all the exercise with rest time included.
   return (
     <div className="section">
       <p className="is-size-3-desktop is-size-4-touch has-text-weight-bold has-text-centered ">
@@ -103,9 +109,9 @@ const DoWorkOutSummary = (props) => {
               ...WorkoutProgress,
               didStart: true,
             })}
-            style={{ borderRadius: "50%" }}
             className="button is-large is-danger"
           >
+            <span>Start Workout</span>
             <span className="icon ">
               <i className="fas fa-dumbbell"></i>
             </span>

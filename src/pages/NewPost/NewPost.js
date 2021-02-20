@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { AxiosInstance } from "../../App";
+import { AxiosInstance, CACHE } from "../../App";
 
 const NewPost = (props) => {
   const [IsBtnLoading, setIsBtnLoading] = useState(false);
@@ -7,6 +7,8 @@ const NewPost = (props) => {
 
   const handleSubmit = () => {
     const formdata = new FormData();
+    // to update the users post in his profile
+    CACHE.delete("get-user-profile-initial-load");
     formdata.append("caption", textAreaRef.current.value);
     setIsBtnLoading(true);
     AxiosInstance.post("create-user-post", formdata).then((res) => {
@@ -14,44 +16,31 @@ const NewPost = (props) => {
     });
   };
   return (
-    <div className="columns is-centered">
-      <div
-        className="column is-5"
-        style={{ display: "flex", alignItems: "center", minHeight: "90vh" }}
-      >
-        <div style={{ flexGrow: "1" }}>
-          <div
-            className="card"
-            style={{
-              border: "1px solid grey",
-              boxShadow: "3px 3px rgba(136, 134, 134, 0.466)",
-              width: "100%`",
-            }}
-          >
-            <div className="card-image has-background-primary">
-              <figure className="image is-4by3">
-                <img src="some dem image " alt="" />
-              </figure>
-            </div>
-            <div className="card-content has-background-light">
-              <p className="help is-dark mb-2">Caption Of 100 chracters </p>
-              <textarea
-                ref={textAreaRef}
-                className="textarea"
-                rows="4"
-                maxLength="100"
-              ></textarea>
-            </div>
+    <div className="columns is-centered mt-6">
+      <div className="column is-5  is-flex is-align-items-center">
+        <div className="card" style={{ width: "100%" }}>
+          <div className="card-image has-background-primary">
+            <figure className="image is-4by3">
+              <img src="some dem image " alt="" />
+            </figure>
           </div>
-          <div className="buttons is-centered mt-4">
+          <div className="card-content has-background-light">
+            <p className="help is-dark mb-2">Caption Of 100 chracters </p>
+            <textarea
+              ref={textAreaRef}
+              className="textarea"
+              rows={4}
+              maxLength={100}
+            ></textarea>
+            <br />
             <button
               onClick={handleSubmit}
               className={
-                "button is-link is-medium is-light is-outlined " +
+                "button is-link is-light is-outlined " +
                 (IsBtnLoading && "is-loading")
               }
             >
-              Done
+              Post
             </button>
           </div>
         </div>

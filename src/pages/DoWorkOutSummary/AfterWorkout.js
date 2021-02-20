@@ -5,7 +5,6 @@ import img from "../../assets/img/workoutComplete.gif";
 import Loader from "../../components/Loader/Loader";
 
 const AfterWorkout = ({ id }) => {
-  console.log(id);
   const [IsLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // send data to backend

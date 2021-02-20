@@ -6,70 +6,54 @@ class DoWorkOut extends Component {
     isRestTime: false,
     activeTime: 10,
     restTime: 20,
-    intervalTimer: null,
     isPause: false,
   };
+  timer = null;
+  // handling the timer in this, in development react called setstaet twice which causees triggering of multiple timers so using this
   componentDidMount() {
+    this.timer = setInterval(this.handleInterval, 200);
     this.setState({
       isRestTime: false,
       activeTime: parseInt(this.props.activeTime),
       restTime: parseInt(this.props.restTime),
-      intervalTimer: setInterval(this.handleInterval, 200),
       isPause: false,
     });
   }
   componentWillUnmount() {
-    clearInterval(this.state.intervalTimer);
+    clearInterval(this.timer);
   }
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.exercise.name !== this.props.exercise.name) {
-      this.componentWillUnmount();
-    }
-    return true;
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.exercise.name !== this.props.exercise.name)
+  componentDidUpdate(prevProps) {
+    if (prevProps.exercise.name !== this.props.exercise.name) {
+      clearInterval(this.timer);
       this.componentDidMount();
+    }
   }
   handleInterval = () => {
-    this.setState(
-      (state) => {
-        const updatedTimerState = { ...state };
-        if (updatedTimerState.isRestTime) {
-          updatedTimerState.restTime -= 1;
-          if (updatedTimerState.restTime === 0) {
-            //  resetting the rest timer
-            //   updatedTimerState.restTimeRemaining = updatedTimerState.restTime;
-            //   updatedTimerState.isRestTime = false;
-            console.log("the rest time has ended ");
-            this.props.next();
-          }
-        } else {
-          updatedTimerState.activeTime -= 1;
-          if (updatedTimerState.activeTime === 0) {
-            //    resetting the active timer
-            //   updatedTimerState.activeTimeRemaining = updatedTimerState.activeTime;
-            updatedTimerState.isRestTime = true;
-          }
-        }
-        return updatedTimerState;
-      },
-      () => {
-        if (this.state.restTime < 0) {
+    this.setState((state) => {
+      const updatedTimerState = { ...state };
+      if (updatedTimerState.isRestTime) {
+        updatedTimerState.restTime -= 1;
+        if (updatedTimerState.restTime === 0) {
+          // if rest time is do the next exercise
           this.props.next();
         }
+      } else {
+        updatedTimerState.activeTime -= 1;
+        if (updatedTimerState.activeTime === 0) {
+          // after exercise time is over start with rest time.
+          updatedTimerState.isRestTime = true;
+        }
       }
-    );
+      return updatedTimerState;
+    });
   };
   pause = () => {
     this.setState({ isPause: true });
-    clearInterval(this.state.intervalTimer);
+    clearInterval(this.timer);
   };
   startInterval = () => {
-    this.setState({
-      isPause: false,
-      intervalTimer: setInterval(this.handleInterval, 200),
-    });
+    this.timer = setInterval(this.handleInterval, 200);
+    this.setState({ isPause: false });
   };
   render() {
     return (
