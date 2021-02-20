@@ -82,7 +82,6 @@ class DoWorkOutSummary extends Component {
     });
   };
   render() {
-    console.log(this.state);
     if (this.state.WorkoutProgress.didEnd)
       return <AfterWorkout id={this.state.WorkoutSummaryData.id} />;
     if (this.state.WorkoutProgress.didStart)
