@@ -4793,15 +4793,15 @@ fieldset[disabled] .select select:hover {
   padding-left: 0;
 }
 
-.breadcrumb li.is-active a {
-  color: #363636;
-  cursor: default;
-  pointer-events: none;
-}
-
 .breadcrumb li + li::before {
   color: #b5b5b5;
   content: "\0002f";
+}
+
+.breadcrumb li a.is-active {
+  color: #363636;
+  cursor: default;
+  pointer-events: none;
 }
 
 .breadcrumb ul,

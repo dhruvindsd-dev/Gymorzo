@@ -1,11 +1,8 @@
 import React from "react";
 
 const StateUiOne = ({ handleInput, value, touched, next }) => (
-  <div
-    className="center-vertically"
-    style={{ height: "60vh", justifyContent: "center" }}
-  >
-    <div className="field has-addons">
+  <div className="is-flex is-justify-content-center">
+    <div className="field has-addons mt-6">
       <div className="control">
         <label className=" button is-static ">Workout Name</label>
       </div>

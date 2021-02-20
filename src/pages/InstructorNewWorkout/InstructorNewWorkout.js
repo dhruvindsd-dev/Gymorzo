@@ -3,6 +3,7 @@ import { AxiosInstance } from "../../App";
 import StateUiOne from "./StateUiOne/StateUiOne";
 import StateUiTwo from "./StateUiTwo/StateUiTwo";
 import StateUiThree from "./StateUiThree/StateUiThree";
+import { NavLink } from "react-router-dom";
 //  nme , exercices , rest time and exercise time
 // 3 different states : name , exercies and time
 // 2 way binding is very nessesary because : lets say the user goes back from state 3 to state 1 in that case we the same data to show and not some blank thing
@@ -110,9 +111,28 @@ class InstructorNewWorkout extends Component {
       );
     return (
       <div className="section">
-        <p className="is-size-2 has-text-weight-bold has-text-centered">
+        <p className="is-size-3 has-text-weight-bold has-text-centered">
           New Workout
         </p>
+        <nav className="breadcrumb is-centered has-arrow-separator">
+          <ul>
+            <li>
+              <NavLink activeClassName="is-active" to="name">
+                Name
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="is-active" to="exercises">
+                Exercises
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName="is-active" to="time">
+                Time
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
         {stateUi}
       </div>
     );

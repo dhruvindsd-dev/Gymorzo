@@ -25,14 +25,15 @@ $breadcrumb-item-separator-color: $border-hover !default
     display: flex
     &:first-child a
       +ltr-property("padding", 0, false)
-    &.is-active
-      a
-        color: $breadcrumb-item-active-color
-        cursor: default
-        pointer-events: none
     & + li::before
       color: $breadcrumb-item-separator-color
       content: "\0002f"
+  li
+    a.is-active
+      color: $breadcrumb-item-active-color
+      cursor: default
+      pointer-events: none
+
   ul,
   ol
     align-items: flex-start
