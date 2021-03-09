@@ -50,7 +50,8 @@ const UserAuth = (props) => {
                 <span>FaceBook</span>
               </button>
             </div>
-            <p className="my-n3 has-text-weight-bold"> - OR - </p>
+            <p className="my-3 has-text-weight-bold"> - OR - </p>
+
             <InputList isSignUp={IsSignUp} />
           </div>
         </div>
