@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import Logo from "../../components/Logo/Logo";
-import InputList from "./InputList/InputList";
+import HookForm from "./InputList/HookForm";
 
 const UserAuth = (props) => {
   const [IsSignUp, setIsSignUp] = useState(false);
@@ -52,7 +52,7 @@ const UserAuth = (props) => {
             </div>
             <p className="my-3 has-text-weight-bold"> - OR - </p>
 
-            <InputList isSignUp={IsSignUp} />
+            <HookForm isSignUp={IsSignUp} />
           </div>
         </div>
       </div>
